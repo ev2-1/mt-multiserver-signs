@@ -18,7 +18,7 @@ const (
 	SIGN_WIDTH         = 115
 	LINE_LENGTH        = 15
 	NUMBER_OF_LINES    = 4
-	LINE_HEIGHT        = 14
+	LINE_HEIGHT        = 13
 	CHAR_WIDTH         = 5
 	PRINTED_CHAR_WIDTH = CHAR_WIDTH + 1
 
