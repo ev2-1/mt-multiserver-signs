@@ -14,7 +14,7 @@ var mathsMu sync.Once
 
 func Maths() {
 	mathsMu.Do(func() {
-		m := (-1.0/16.0 + 1.0/64.0) * 10.0 * 1.5
+		m := (-1.0/16.0 + 1.0/64.0) * 10.0 * 1
 		var angles [16]float32
 
 		for i := 0; i < 16; i++ {
@@ -46,7 +46,7 @@ func SignProps() mt.AOProps {
 		NametagColor:     color.NRGBA{R: 0xFF, G: 0xFF, B: 0xFF, A: 0xFF},
 		NametagBG:        color.NRGBA{R: 0x01, G: 0x01, B: 0x01, A: 0x00},
 		FaceRotateSpeed:  -1,
-		Infotext:         "mcl_signs:standing_sign",
+		Infotext:         "",
 		Itemstring:       "",
 	}
 }
@@ -78,6 +78,7 @@ func rot2Vec(r Rotate) mt.Vec {
 
 func toPos(p [3]int16, r Rotate, w bool) (f [3]float32) {
 	Maths()
+	
 	if w {
 		for k := range f {
 			f[k] = float32(p[k]*10) + offsetsW[r/4][k]
@@ -86,6 +87,7 @@ func toPos(p [3]int16, r Rotate, w bool) (f [3]float32) {
 		for k := range f {
 			f[k] = float32(p[k]*10) + offsets[r][k]
 		}
+		f[1] += 0.8
 	}
 	return
 }
