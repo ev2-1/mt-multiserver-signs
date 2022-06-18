@@ -2,11 +2,12 @@ package signs
 
 import (
 	"github.com/anon55555/mt"
-	
+
 	"github.com/HimbeerserverDE/mt-multiserver-proxy"
+
+	"sync"
 )
 
-// TODO: readyplayers correctly (has to be implemented in multiserver itself)
 func Ready(cc *proxy.ClientConn) {
 	updateSignText()
 
@@ -28,4 +29,17 @@ func Ready(cc *proxy.ClientConn) {
 
 	// client ready
 	readyClients[cc.Name()] = true
+}
+
+var initPlayerActivatorMu sync.Once
+
+// registers all the stuffs
+func initPlayerActivator() {
+	initPlayerActivatorMu.Do(func() {
+		proxy.RegisterClientHandler(&proxy.ClientHandler{
+			AOReady: func(cc *proxy.ClientConn) {
+				Ready(cc)
+			},
+		})
+	})
 }

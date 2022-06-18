@@ -136,6 +136,9 @@ var signs = make(map[string][]*Sign)
 var signsMu sync.RWMutex
 
 func RegisterSign(ps *Sign) {
+	initPlayerActivator()
+	initUpdates()
+
 	signsMu.Lock()
 	defer signsMu.Unlock()
 

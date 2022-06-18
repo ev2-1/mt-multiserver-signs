@@ -3,6 +3,8 @@ package signs
 import (
 	"fmt"
 	"strings"
+
+	"github.com/ev2-1/mt-multiserver-playertools"
 )
 
 type DynContent interface {
@@ -11,11 +13,10 @@ type DynContent interface {
 
 type PlayerCnt struct {
 	Srv string
-	Pad int
 }
 
 func (pc *PlayerCnt) Evaluate(text string, pos *SignPos) string {
-	return fmt.Sprintf("%d",1)// playersOnSrv(pc.Srv))
+	return fmt.Sprintf("%d", playerTools.ServerPlayers(pc.Srv))
 }
 
 type Center struct {
