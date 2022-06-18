@@ -72,6 +72,27 @@ const (
 	West67_5
 )
 
+var (
+	rotationMap = map[string]Rotate{
+		"north": North,
+		"north22_5": North22_5,
+		"north45": North45,
+		"north67_5": North67_5,
+		"east": East,
+		"east22_5": East22_5,
+		"east45": East45,
+		"east67_5": East67_5,
+		"south": South,
+		"south22_5": South22_5,
+		"south45": South45,
+		"south67_5": South67_5,
+		"west": West,
+		"west22_5": West22_5,
+		"west45": West45,
+		"west67_5": West67_5,
+	}
+)
+
 func rot2Vec(r Rotate) mt.Vec {
 	return mt.Vec{0, float32(r) / 4 * 90, 0}
 }
