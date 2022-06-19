@@ -107,6 +107,7 @@ func GenerateSignTexture(text string, wall bool, color string) mt.Texture {
 
 	return mt.Texture(texture + "^[colorize:" + color + ":128")
 }
+
 // Generates a mt.AOCmdTextureMod for some signtext
 func GenerateTextureAOMod(text string, wall bool, color string) *mt.AOCmdTextureMod {
 	return &mt.AOCmdTextureMod{

@@ -1,8 +1,8 @@
 package signs
 
 import (
-	"github.com/anon55555/mt"
 	"github.com/HimbeerserverDE/mt-multiserver-proxy"
+	"github.com/anon55555/mt"
 
 	"sync"
 )
