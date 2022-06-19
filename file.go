@@ -1,10 +1,10 @@
 package signs
 
 import (
-	"fmt"
 	"bufio"
-	"strings"
+	"fmt"
 	"strconv"
+	"strings"
 )
 
 func ParseReader(scan *bufio.Scanner) (s []*Sign) {
@@ -32,6 +32,9 @@ func ParseReader(scan *bufio.Scanner) (s []*Sign) {
 		case "dyn":
 			buffer.Dyn = append(buffer.Dyn, ParseDyn(cmd[1]))
 
+		case "click":
+			buffer.OnClick = ParseClick(cmd[1])
+
 		case "end":
 			fmt.Println("-------------------------")
 
@@ -46,6 +49,20 @@ func ParseReader(scan *bufio.Scanner) (s []*Sign) {
 	return
 }
 
+// ParseClick parses a Stringrepresentation of a ClickEvent
+func ParseClick(s string) ClickEvent {
+	split := strings.SplitN(s, ":", 2)
+
+	switch split[0] {
+	case "Hop":
+		return &Hop{
+			Srv: split[1],
+		}
+	}
+
+	return nil
+}
+
 // ParseDyn parses string into dyncontent Interface
 func ParseDyn(s string) DynContent {
 	split := strings.SplitN(s, ":", 2)
@@ -56,8 +73,8 @@ func ParseDyn(s string) DynContent {
 		l, _ := strconv.Atoi(arg[1])
 		return &Padding{
 			Prepend: arg[0] == "prepend",
-			Length: l,
-			Filler: []rune(arg[2])[0],
+			Length:  l,
+			Filler:  []rune(arg[2])[0],
 			Content: ParseDyn(arg[3]),
 		}
 
@@ -72,10 +89,10 @@ func ParseDyn(s string) DynContent {
 		length, _ := strconv.Atoi(arg[1])
 		sub, _ := strconv.Atoi(arg[3])
 		return &Center{
-			Line: line,
+			Line:   line,
 			Length: length,
-			Rune: []rune(arg[2])[0],
-			Sub: sub,
+			Rune:   []rune(arg[2])[0],
+			Sub:    sub,
 		}
 
 	case "Text":

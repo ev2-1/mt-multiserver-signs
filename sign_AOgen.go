@@ -31,23 +31,23 @@ func Maths() {
 
 func SignProps() mt.AOProps {
 	return mt.AOProps{
-		MaxHP:            10,
-		Pointable:        false,
-		Visual:           "upright_sprite",
-		VisualSize:       [3]float32{1.0, 1.0, 1.0},
-		Textures:         []mt.Texture{"[combine:115x115"},
-		DmgTextureMod:    "^[brighten",
-		Shaded:           true,
-		SpriteSheetSize:  [2]int16{1, 1},
-		SpritePos:        [2]int16{0, 0},
-		Visible:          true,
-		Colors:           []color.NRGBA{color.NRGBA{R: 0xFF, G: 0xFF, B: 0xFF, A: 0xFF}},
-		BackfaceCull:     true,
-		NametagColor:     color.NRGBA{R: 0xFF, G: 0xFF, B: 0xFF, A: 0xFF},
-		NametagBG:        color.NRGBA{R: 0x01, G: 0x01, B: 0x01, A: 0x00},
-		FaceRotateSpeed:  -1,
-		Infotext:         "",
-		Itemstring:       "",
+		MaxHP:           10,
+		Pointable:       false,
+		Visual:          "upright_sprite",
+		VisualSize:      [3]float32{1.0, 1.0, 1.0},
+		Textures:        []mt.Texture{"[combine:115x115"},
+		DmgTextureMod:   "^[brighten",
+		Shaded:          true,
+		SpriteSheetSize: [2]int16{1, 1},
+		SpritePos:       [2]int16{0, 0},
+		Visible:         true,
+		Colors:          []color.NRGBA{color.NRGBA{R: 0xFF, G: 0xFF, B: 0xFF, A: 0xFF}},
+		BackfaceCull:    true,
+		NametagColor:    color.NRGBA{R: 0xFF, G: 0xFF, B: 0xFF, A: 0xFF},
+		NametagBG:       color.NRGBA{R: 0x01, G: 0x01, B: 0x01, A: 0x00},
+		FaceRotateSpeed: -1,
+		Infotext:        "",
+		Itemstring:      "",
 	}
 }
 
@@ -74,22 +74,22 @@ const (
 
 var (
 	rotationMap = map[string]Rotate{
-		"north": North,
+		"north":     North,
 		"north22_5": North22_5,
-		"north45": North45,
+		"north45":   North45,
 		"north67_5": North67_5,
-		"east": East,
-		"east22_5": East22_5,
-		"east45": East45,
-		"east67_5": East67_5,
-		"south": South,
+		"east":      East,
+		"east22_5":  East22_5,
+		"east45":    East45,
+		"east67_5":  East67_5,
+		"south":     South,
 		"south22_5": South22_5,
-		"south45": South45,
+		"south45":   South45,
 		"south67_5": South67_5,
-		"west": West,
-		"west22_5": West22_5,
-		"west45": West45,
-		"west67_5": West67_5,
+		"west":      West,
+		"west22_5":  West22_5,
+		"west45":    West45,
+		"west67_5":  West67_5,
 	}
 )
 
@@ -99,7 +99,7 @@ func rot2Vec(r Rotate) mt.Vec {
 
 func toPos(p [3]int16, r Rotate, w bool) (f [3]float32) {
 	Maths()
-	
+
 	if w {
 		for k := range f {
 			f[k] = float32(p[k]*10) + offsetsW[r/4][k]

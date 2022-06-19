@@ -57,5 +57,3 @@ type Text struct {
 func (t *Text) Evaluate(text string, pos *SignPos) string {
 	return t.text
 }
-
-

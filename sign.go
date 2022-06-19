@@ -9,8 +9,9 @@ import (
 	"sync"
 	"unicode/utf8"
 
-	"github.com/anon55555/mt"
 	"github.com/HimbeerserverDE/mt-multiserver-proxy"
+	"github.com/anon55555/mt"
+	"github.com/ev2-1/mt-multiserver-playertools"
 )
 
 var charMap map[rune]string
@@ -121,15 +122,17 @@ type SignPos struct {
 }
 
 type Sign struct {
-	Pos   *SignPos
-	aoid  mt.AOID
+	Pos  *SignPos
+	aoid mt.AOID
 
 	Text  string
 	Color string
-	Dyn  []DynContent
+	Dyn   []DynContent
+
+	OnClick ClickEvent
 
 	cachedText string
-	changed bool
+	changed    bool
 }
 
 var signs = make(map[string][]*Sign)
@@ -144,6 +147,17 @@ func RegisterSign(ps *Sign) {
 
 	_, ps.aoid = proxy.GetServerAOId(ps.Pos.Server)
 
+	if ps.OnClick != nil {
+		playerTools.RegisterClick(&playerTools.ClickHandler{
+			Pos: ps.Pos.Pos,
+			Srv: ps.Pos.Server,
+
+			Handler: func(cc *proxy.ClientConn) {
+				ps.OnClick.Click(cc, ps)
+			},
+		})
+	}
+
 	signs[ps.Pos.Server] = append(signs[ps.Pos.Server], ps)
 }
 
@@ -156,7 +170,7 @@ func updateSignText() {
 			var dyn []any
 			for _, d := range s.Dyn {
 				dyn = append(dyn, d.Evaluate(s.Text, s.Pos))
-			}	
+			}
 
 			text := fmt.Sprintf(s.Text, dyn...)
 
@@ -170,7 +184,7 @@ func updateSignText() {
 
 func Update() {
 	updateSignText()
-	
+
 	signsMu.RLock()
 	defer signsMu.RUnlock()
 
@@ -180,7 +194,7 @@ func Update() {
 		for _, s := range signs {
 			if s.changed {
 				sendCache[srv] = append(sendCache[srv], mt.IDAOMsg{
-					ID: s.aoid,
+					ID:  s.aoid,
 					Msg: GenerateTextureAOMod(s.cachedText, s.Pos.Wall, s.Color),
 				})
 			}
@@ -191,9 +205,9 @@ func Update() {
 		if !readyClients[clt.Name()] {
 			break
 		}
-	
+
 		srv := clt.ServerName()
-	
+
 		if len(sendCache[srv]) != 0 {
 			clt.SendCmd(&mt.ToCltAOMsgs{
 				Msgs: sendCache[srv],

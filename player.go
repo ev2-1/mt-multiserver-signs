@@ -31,6 +31,23 @@ func Ready(cc *proxy.ClientConn) {
 	readyClients[cc.Name()] = true
 }
 
+func UnReady(cc *proxy.ClientConn, srv string) {
+	signsMu.RLock()
+	defer signsMu.RUnlock()
+
+	var AOIDs []mt.AOID
+
+	for _, s := range signs[srv] {
+		AOIDs = append(AOIDs, s.aoid)
+	}
+
+	if len(AOIDs) != 0 {
+		cc.SendCmd(&mt.ToCltAORmAdd{
+			Remove: AOIDs,
+		})
+	}
+}
+
 var initPlayerActivatorMu sync.Once
 
 // registers all the stuffs
@@ -39,6 +56,13 @@ func initPlayerActivator() {
 		proxy.RegisterClientHandler(&proxy.ClientHandler{
 			AOReady: func(cc *proxy.ClientConn) {
 				Ready(cc)
+			},
+			Hop: func(cc *proxy.ClientConn, src, dest string) {
+				UnReady(cc, src)
+				Ready(cc)
+			},
+			Leave: func(cc *proxy.ClientConn, _ *proxy.Leave) {
+				UnReady(cc, cc.ServerName())
 			},
 		})
 	})
