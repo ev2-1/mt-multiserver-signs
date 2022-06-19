@@ -22,7 +22,7 @@ var Prefix string = "micl2_"
 
 var readyClients = make(map[string]bool)
 
-// CharUrl is the Url the characters.txt file will be loaded from (default is official mineclone2 repos)
+// CharUrl is the Url the characters.txt file will be loaded from (default is official MineClone2 repos)
 var CharUrl = "https://git.minetest.land/MineClone2/MineClone2/raw/commit/d887a9731055fb041624cb6a1a09fa4ee7365bf6/mods/ITEMS/mcl_signs/characters.txt"
 
 const (
@@ -66,7 +66,7 @@ func LoadCharMap() {
 	})
 }
 
-// center line centers a line, by padding the same left and right (right one more with odd length strings)
+// CenterLine centers a line, by padding the same left and right (right one more with odd length strings)
 func CenterLine(line string, filler rune, width int) string {
 	if len(line) > width {
 		return line
@@ -107,13 +107,14 @@ func GenerateSignTexture(text string, wall bool, color string) mt.Texture {
 
 	return mt.Texture(texture + "^[colorize:" + color + ":128")
 }
-
+// Generates a mt.AOCmdTextureMod for some signtext
 func GenerateTextureAOMod(text string, wall bool, color string) *mt.AOCmdTextureMod {
 	return &mt.AOCmdTextureMod{
 		Mod: "^" + GenerateSignTexture(text, wall, color),
 	}
 }
 
+// SignPos defines the absolute position of a signtext
 type SignPos struct {
 	Pos      [3]int16
 	Wall     bool
@@ -182,6 +183,7 @@ func updateSignText() {
 	}
 }
 
+// Update should be called whenever a `DynContent` value might change
 func Update() {
 	updateSignText()
 

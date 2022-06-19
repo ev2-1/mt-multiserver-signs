@@ -12,6 +12,7 @@ var offsets [16][3]float32
 var offsetsW [4][3]float32
 var mathsMu sync.Once
 
+// Calculates some stuff for signs
 func Maths() {
 	mathsMu.Do(func() {
 		m := (-1.0/16.0 + 1.0/64.0) * 10.0 * 1
@@ -29,6 +30,7 @@ func Maths() {
 	})
 }
 
+// SignProps retuns a ruff AOProps representing a empty/raw sign
 func SignProps() mt.AOProps {
 	return mt.AOProps{
 		MaxHP:           10,

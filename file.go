@@ -2,12 +2,12 @@ package signs
 
 import (
 	"bufio"
-	"fmt"
 	"strconv"
 	"strings"
 )
 
-func ParseReader(scan *bufio.Scanner) (s []*Sign) {
+// ParseScanner parses a bufio.Scanner into a []*Sign
+func ParseScanner(scan *bufio.Scanner) (s []*Sign) {
 	var buffer = &Sign{}
 	for scan.Scan() {
 		text := scan.Text()
@@ -36,10 +36,7 @@ func ParseReader(scan *bufio.Scanner) (s []*Sign) {
 			buffer.OnClick = ParseClick(cmd[1])
 
 		case "end":
-			fmt.Println("-------------------------")
-
 			if buffer.Text != "" {
-				fmt.Println("signn", buffer.Text)
 				s = append(s, buffer)
 				buffer = &Sign{}
 			}
@@ -97,16 +94,16 @@ func ParseDyn(s string) DynContent {
 
 	case "Text":
 		return &Text{
-			text: strings.ReplaceAll(split[1], "\\n", "\n"),
+			Text: strings.ReplaceAll(split[1], "\\n", "\n"),
 		}
 	}
 
-	return &Text{text: ""}
+	return &Text{Text: ""}
 }
 
 // ParsePos parses a stringpos like:
 // 2 10 -5@hub wall South
-// into SignPos
+// into a SignPos
 func ParsePos(s string) (pos *SignPos) {
 	pos = &SignPos{}
 

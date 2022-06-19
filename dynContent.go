@@ -11,6 +11,7 @@ type DynContent interface {
 	Evaluate(string, *SignPos) string
 }
 
+// PlayerCnt is a `DynContent` replaced by the PlayerCount on Srv
 type PlayerCnt struct {
 	Srv string
 }
@@ -19,6 +20,7 @@ func (pc *PlayerCnt) Evaluate(text string, pos *SignPos) string {
 	return fmt.Sprintf("%d", playerTools.ServerPlayers(pc.Srv))
 }
 
+// Padding is a `DynContent`
 type Center struct {
 	Line   int
 	Length int
@@ -32,9 +34,9 @@ func (ce *Center) Evaluate(text string, pos *SignPos) string {
 	return strings.Repeat(string(ce.Rune), p)
 }
 
+// Padding is a `DynContent`, padding Content to be `Length` long filleed up by `Filler` while either `Prepending` or else Appending
 type Padding struct {
 	Prepend bool
-	Append  bool
 	Length  int
 	Filler  rune
 	Content DynContent
@@ -50,10 +52,11 @@ func (pa *Padding) Evaluate(text string, pos *SignPos) string {
 	}
 }
 
+// Text is a `DynContent` thats static any always returns `Text`
 type Text struct {
-	text string
+	Text string
 }
 
 func (t *Text) Evaluate(text string, pos *SignPos) string {
-	return t.text
+	return t.Text
 }

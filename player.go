@@ -2,12 +2,13 @@ package signs
 
 import (
 	"github.com/anon55555/mt"
-
 	"github.com/HimbeerserverDE/mt-multiserver-proxy"
 
 	"sync"
 )
 
+// Ready is called internaly
+// Should not have to be called externaly
 func Ready(cc *proxy.ClientConn) {
 	updateSignText()
 
@@ -31,7 +32,9 @@ func Ready(cc *proxy.ClientConn) {
 	readyClients[cc.Name()] = true
 }
 
-func UnReady(cc *proxy.ClientConn, srv string) {
+// Unready is called internaly
+// Should not have to be called externaly
+func Unready(cc *proxy.ClientConn, srv string) {
 	signsMu.RLock()
 	defer signsMu.RUnlock()
 
@@ -58,11 +61,11 @@ func initPlayerActivator() {
 				Ready(cc)
 			},
 			Hop: func(cc *proxy.ClientConn, src, dest string) {
-				UnReady(cc, src)
+				Unready(cc, src)
 				Ready(cc)
 			},
 			Leave: func(cc *proxy.ClientConn, _ *proxy.Leave) {
-				UnReady(cc, cc.ServerName())
+				Unready(cc, cc.ServerName())
 			},
 		})
 	})

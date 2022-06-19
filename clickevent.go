@@ -8,6 +8,7 @@ type ClickEvent interface {
 	Click(cc *proxy.ClientConn, sign *Sign)
 }
 
+// Hops is a `ClickEvent`, when clicked cc.Hop(Srv) is executed
 type Hop struct {
 	Srv string
 }
