@@ -81,15 +81,14 @@ func ParseDyn(s string) DynContent {
 		}
 
 	case "Center":
-		arg := strings.SplitN(split[1], ",", 4)
-		line, _ := strconv.Atoi(arg[0])
-		length, _ := strconv.Atoi(arg[1])
-		sub, _ := strconv.Atoi(arg[3])
+		arg := strings.SplitN(split[1], ",", 3)
+		l, _ := strconv.Atoi(arg[1])
+		c := arg[2]
 		return &Center{
-			Line:   line,
-			Length: length,
-			Rune:   []rune(arg[2])[0],
-			Sub:    sub,
+			Filler:  []rune(arg[0])[0],
+			Length: l,
+
+			Content: ParseDyn(c),
 		}
 
 	case "Text":

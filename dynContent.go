@@ -22,16 +22,26 @@ func (pc *PlayerCnt) Evaluate(text string, pos *SignPos) string {
 
 // Padding is a `DynContent`
 type Center struct {
-	Line   int
+	Filler rune
 	Length int
-	Rune   rune
-	Sub    int
+
+	Content DynContent
 }
 
 func (ce *Center) Evaluate(text string, pos *SignPos) string {
-	p := (ce.Length - len(strings.Split(text, "\n")[ce.Line-1])) / 2
+	c := ce.Content.Evaluate(text, pos)
+	l := len(c)
+	
+	var p1, p2 string
+	if len(c) % 2 == 0 {
+		p1 = strings.Repeat(string(ce.Filler), ce.Length/2 -  l/2)
+		p2 = p1
+	} else {
+		p1 = strings.Repeat(string(ce.Filler), ce.Length/2 -  l/2)
+		p2 = strings.Repeat(string(ce.Filler), ce.Length/2 - (l/2)+1)		
+	}
 
-	return strings.Repeat(string(ce.Rune), p)
+	return p1 + c + p2
 }
 
 // Padding is a `DynContent`, padding Content to be `Length` long filleed up by `Filler` while either `Prepending` or else Appending
